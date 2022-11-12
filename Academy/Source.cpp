@@ -1,4 +1,4 @@
-#include<iostream>
+ο»Ώ#include<iostream>
 using namespace std;
 
 #define delimiter "\n------------------------------------------\n"
@@ -38,7 +38,7 @@ public:
 	//				Methods:
 	void print()const
 	{
-		cout << last_name << " " << first_name << " " << age << " λες.\n";
+		cout << last_name << " " << first_name << " " << age << " Π»ΠµΡ‚.\n";
 	}
 };
 
