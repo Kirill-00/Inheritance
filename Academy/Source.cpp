@@ -36,11 +36,16 @@ public:
 		cout << "HDestructor:\t" << this << endl;
 	}
 	//				Methods:
-	virtual void print()const
+	virtual std::ostream& print(std::ostream& os)const
 	{
-		cout << last_name << " " << first_name << " " << age << " лет.\n";
+		return os << last_name << " " << first_name << " " << age << " лет.\n";
 	}
 };
+
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return obj.print(os);
+}
 
 #define STUDENT_TAKE_PARAMETERS	const std::string& specialty, const std::string& group, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS	specialty, group, rating, attendance
@@ -98,10 +103,9 @@ public:
 		cout << "SDestructor:\t" << this << endl;
 	}
 	//				Methods:
-	void print() const
+	std::ostream& print(std::ostream& os) const override
 	{
-		Human::print();
-		cout << specialty << " " << group << " " << rating << " " << attendance << endl;
+		return Human::print(os) << specialty << " " << group << " " << rating << " " << attendance << endl;
 	}
 };
 
@@ -140,10 +144,10 @@ public:
 		cout << "TDestructor:\t" << this << endl;
 	}
 	//				Methods:
-	void print() const
+	std::ostream& print(std::ostream& os) const override
 	{
-		Human::print();
-		cout << specialty << " " << experience << endl;
+		
+		return Human::print(os) << specialty << " " << experience << endl;
 	}
 };
 class Graduate :public Student
@@ -170,10 +174,10 @@ public:
 		cout << "GDestructor:\t" << this << endl;
 	}
 	//				Methods:
-	void print() const
+	std::ostream& print(std::ostream& os) const override
 	{
-		Student::print();
-		cout << project_topic << endl;
+		Student::print(os);
+		return os << project_topic << endl;
 	}
 };
 
@@ -211,7 +215,8 @@ void main()
 
 	for (int i = 0; i < sizeof(group)/sizeof(Human*); i++)
 	{
-		group[i]->print();
+		//group[i]->print();
+		cout << *group[i] << endl;
 		cout << delimiter << endl;
 	}
 
