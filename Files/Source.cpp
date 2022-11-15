@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 #include<fstream>
 using namespace std;
 
@@ -9,26 +9,31 @@ void main()
 {
 	setlocale(LC_ALL, "");
 #ifdef WRITE_TO_FILE
-	std::ofstream fout;  //1) Создаем поток
-	fout.open("File.txt", std::ios::app); //2) Открываем в поток
-	//std::ios::app - не переписывать файл, а дописывать в конце файла
-	fout << "Hello Files!" << endl;//3) Пишем в поток
-	fout.close();        //4) Закрываем поток
+	std::ofstream fout;  //1) РЎРѕР·РґР°РµРј РїРѕС‚РѕРє
+	fout.open("File.txt", std::ios::app); //2) РћС‚РєСЂС‹РІР°РµРј РІ РїРѕС‚РѕРє
+	//std::ios::app - РЅРµ РїРµСЂРµРїРёСЃС‹РІР°С‚СЊ С„Р°Р№Р», Р° РґРѕРїРёСЃС‹РІР°С‚СЊ РІ РєРѕРЅС†Рµ С„Р°Р№Р»Р°
+	fout << "Hello Files!" << endl;//3) РџРёС€РµРј РІ РїРѕС‚РѕРє
+	fout.close();        //4) Р—Р°РєСЂС‹РІР°РµРј РїРѕС‚РѕРє
 
-	system("notepad File.txt"); //Функция System() запускае любую программу к которой есть путь в виндовс  
+	system("notepad File.txt"); //Р¤СѓРЅРєС†РёСЏ System() Р·Р°РїСѓСЃРєР°Рµ Р»СЋР±СѓСЋ РїСЂРѕРіСЂР°РјРјСѓ Рє РєРѕС‚РѕСЂРѕР№ РµСЃС‚СЊ РїСѓС‚СЊ РІ РІРёРЅРґРѕРІСЃ  
 #endif // WRITE_TO_FILE
 
-	ifstream fin("File.txt");
+	ifstream fin("File.txt"); //РџРѕС‚РѕРє РѕС‚РєСЂС‹РІР°РµС‚СЃСЏ РїСЂСЏРјРѕ РїСЂРё СЃРѕР·РґР°РЅРёРё
 	if (fin.is_open())
 	{
-		//Будм читать файл
-		const int SIZE = 256;
+		//Р‘СѓРґРµРј С‡РёС‚Р°С‚СЊ С„Р°Р№Р»
+		const int SIZE = 1024;
 		char buffer[SIZE] = {};
+		//cout << typeid(fin.tellg()).name() << endl;
+		//std::fpos<_Mbstatet> pos = fin.tellg();
 		while (!fin.eof())
 		{
-			fin >> buffer;
+			//fin >> buffer;
+			//cout << fin.tellg() << "\t";
+			fin.getline(buffer, SIZE);
 			cout << buffer << endl;
 		}
+		cout << fin.tellg() << "\n";	//РїРѕРєР°Р·С‹РІР°РµС‚ РїРѕР·РёС†РёСЋ РєСѓСЂСЃРѕСЂР°
 		fin.close();
 	}
 	else

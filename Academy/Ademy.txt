@@ -1,0 +1,30 @@
+ , Pinkman Jessie 25 лет.
+ , Chemistry WW_220 90 95
+
+------------------------------------------
+
+ , White Walter 50 лет.
+ , Chemistry 20
+
+------------------------------------------
+
+ , Montana Jessie 40 лет.
+ , Physics WW_220 80 90Physical physics
+
+------------------------------------------
+
+ , Vercetti Tomas 30 лет.
+ , Criminalistic Vice 98 99
+
+------------------------------------------
+
+ , Diaz Ricardo 50 лет.
+ , Weapons distribution 15
+
+------------------------------------------
+
+ , Einstein Albert 143 лет.
+ , Astronomy 120
+
+------------------------------------------
+
