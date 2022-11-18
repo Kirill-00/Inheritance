@@ -8,7 +8,7 @@ using namespace std;
 void main()
 {
 	setlocale(LC_ALL, "");
-#ifdef WRITE_TO_FILE
+#ifdef W\RITE_TO_FILE
 	std::ofstream fout;  //1) Создаем поток
 	fout.open("File.txt", std::ios::app); //2) Открываем в поток
 	//std::ios::app - не переписывать файл, а дописывать в конце файла

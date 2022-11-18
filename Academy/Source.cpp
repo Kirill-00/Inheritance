@@ -10,6 +10,8 @@ using namespace std;
 
 class Human
 {
+	static const int FULL_NAME_LENGTH = 20;
+	static const int AGE_LENGTH = 5;
 	std::string last_name;
 	std::string first_name;
 	unsigned int age;
@@ -37,6 +39,7 @@ public:
 	{
 		cout << "HDestructor:\t" << this << endl;
 	}
+
 	//				Methods:
 	virtual std::ostream& print(std::ostream& os)const
 	{
@@ -45,10 +48,10 @@ public:
 	virtual std::ofstream& print(std::ofstream& ofs)const
 	{
 		//ofs << last_name << " " << first_name << " " << age;
-		ofs.width(20);
+		ofs.width(FULL_NAME_LENGTH);
 		ofs << std::left;
 		ofs << last_name + " " + first_name;
-		ofs.width(5);
+		ofs.width(AGE_LENGTH);
 		ofs << std::right;
 		ofs << age;
 		return ofs;
@@ -68,12 +71,20 @@ std::ofstream& operator<<(std::ofstream& ofs, const Human& obj)
 {
 	return obj.print(ofs);
 }
+std::ifstream& operator>>(std::ifstream& ifs, Human& obj)
+{
+	return obj.scan(ifs);
+}
 
 #define STUDENT_TAKE_PARAMETERS	const std::string& specialty, const std::string& group, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS	specialty, group, rating, attendance
 
 class Student :public Human
 {
+	static const int SPECIALTY_LENGTH = 25;
+	static const int GROUP_LENGTH = 10;
+	static const int RATING_LENGTH = 8;
+	static const int ATTENDANCE_LENGTH = 8;
 	std::string specialty;
 	std::string group;
 	double rating;
@@ -111,6 +122,7 @@ public:
 	{
 		this->attendance = attendance;
 	}
+
 	//					Constructors:
 	Student(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETER)
 	{
@@ -124,30 +136,51 @@ public:
 	{
 		cout << "SDestructor:\t" << this << endl;
 	}
-	//				Methods:
-	std::ostream& print(std::ostream& os) const override
+
+	//					Methods:
+	//type		  name (parameters)
+	std::ostream& print(std::ostream& os)const override
 	{
 		return Human::print(os) << ", " << specialty << " " << group << " " << rating << " " << attendance;
 	}
-	std::ofstream& print(std::ofstream& ofs) const override
+	std::ofstream& print(std::ofstream& ofs)const override
 	{
-		Human::print(ofs)<<" ";
-		ofs.width(25);
+		Human::print(ofs) << " ";
+		ofs.width(SPECIALTY_LENGTH);
 		ofs << std::left;
 		ofs << specialty;
-		ofs.width(10);
+		ofs.width(GROUP_LENGTH);
 		ofs << group;
-		ofs.width(8);
+		ofs.width(RATING_LENGTH);
 		ofs << std::right;
 		ofs << rating;
-		ofs.width(8);
-		ofs<< attendance;
+		ofs.width(ATTENDANCE_LENGTH);
+		ofs << attendance;
 		return ofs;
+	}
+	std::ifstream& scan(std::ifstream& ifs)override
+	{
+		Human::scan(ifs);
+		const int SIZE = SPECIALTY_LENGTH;
+		char buffer[SIZE]{};
+		ifs.read(buffer, SIZE - 1);
+		for (int i = SIZE - 2; buffer[i] == ' '; i--)buffer[i] = 0;
+		while (buffer[0] == ' ')
+		{
+			for (int i = 0; buffer[i]; i++)buffer[i] = buffer[i + 1];
+		}
+		specialty = buffer;
+		ifs >> group;
+		ifs >> rating;
+		ifs >> attendance;
+		return ifs;
 	}
 };
 
 class Teacher :public Human
 {
+	static const int SPECIALTY_LENGTH = 25;
+	static const int EXPERIENCE_LENGTH = 5;
 	std::string specialty;
 	unsigned int experience;
 public:
@@ -167,8 +200,10 @@ public:
 	{
 		this->experience = experience;
 	}
+
 	//				Constructors:
-	Teacher(HUMAN_TAKE_PARAMETERS,
+	Teacher(
+		const std::string& last_name, const std::string& first_name, unsigned int age,
 		const std::string& specialty, unsigned int experience
 	) :Human(last_name, first_name, age)
 	{
@@ -180,41 +215,57 @@ public:
 	{
 		cout << "TDestructor:\t" << this << endl;
 	}
-	//				Methods:
-	std::ostream& print(std::ostream& os) const override
-	{
 
-		return Human::print(os) << ", " << specialty << " " << experience;
+	//				Methods:
+	std::ostream& print(std::ostream& os)const override
+	{
+		return  Human::print(os) << ", " << specialty << " " << experience;
 	}
 	std::ofstream& print(std::ofstream& ofs)const override
 	{
 		Human::print(ofs) << " ";
-		ofs.width(25);
+		ofs.width(SPECIALTY_LENGTH);
 		ofs << std::left;
 		ofs << specialty;
-		ofs.width(5);
+		ofs.width(EXPERIENCE_LENGTH);
 		ofs << right;
 		ofs << experience;
 		return ofs;
 	}
+	std::ifstream& scan(std::ifstream& ifs)override
+	{
+		Human::scan(ifs);
+		const int SIZE = SPECIALTY_LENGTH;
+		char buffer[SIZE]{};
+		ifs.read(buffer, SIZE - 1);
+		for (int i = SIZE - 2; buffer[i] == ' '; i--)buffer[i] = 0;
+		while (buffer[0] == ' ')
+		{
+			for (int i = 0; buffer[i]; i++)buffer[i] = buffer[i + 1];
+		}
+		specialty = buffer;
+		ifs >> experience;
+		return ifs;
+	}
 };
+
 class Graduate :public Student
 {
-	std::string project_topic;
+	std::string topic;
 public:
-	const std::string& get_project_topic()const
+	const std::string& get_topic()const
 	{
-		return project_topic;
+		return topic;
 	}
-	void set_project_topic(const std::string& project_topic)
+	void set_topic(const std::string& topic)
 	{
-		this->project_topic = project_topic;
+		this->topic = topic;
 	}
 	//				Constructors:
-	Graduate(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, const std::string& project_topic) :
+	Graduate(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS, const std::string& topic) :
 		Student(HUMAN_GIVE_PARAMETER, STUDENT_GIVE_PARAMETERS)
 	{
-		set_project_topic(project_topic);
+		set_topic(topic);
 		cout << "GConstructor:\t" << this << endl;
 	}
 	~Graduate()
@@ -222,24 +273,34 @@ public:
 		cout << "GDestructor:\t" << this << endl;
 	}
 	//				Methods:
-	std::ostream& print(std::ostream& os) const override
+	std::ostream& print(std::ostream& os)const override
 	{
-		return Student::print(os) << ", Тема дипломного проекта: " << project_topic;
+		return Student::print(os) << ", Тема дипломного проекта: " << topic;
 	}
-	std::ofstream& print(std::ofstream& ofs) const override
+	std::ofstream& print(std::ofstream& ofs)const override
 	{
-		Student::print(ofs) << " " << project_topic;
+		Student::print(ofs) << " " << topic;
 		return ofs;
 	}
 	std::ifstream& scan(std::ifstream& ifs) override
 	{
-		std::getline(ifs, project_topic);
+		Student::scan(ifs);
+		std::getline(ifs, topic);
 		return ifs;
 	}
 };
+
+Human* HumanFactory(const std::string& type)
+{
+	//Этот метод создает объекты в динамической памяти:
+	if (type.find("Student") != std::string::npos)return new Student("", "", 0, "", "", 0, 0);
+	if (type.find("Undergrad") != std::string::npos)return new Graduate("", "", 0, "", "", 0, 0, "");
+	if (type.find("Teacher") != std::string::npos)return new Teacher("", "", 0, "", 0);
+}
+
 void print(Human* group[], const int n)
 {
-	//Specialisation - Óòî÷íåíèå (DownCast - ïðåîáðàçîâàíèå ñâåðõó âíèç)
+	//Specialisation - Уточнение (DownCast - преобразование сверху вниз)
 	for (int i = 0; i < n; i++)
 	{
 		//group[i]->print();
@@ -265,7 +326,7 @@ void save(Human* group[], const int n, const std::string& filename)
 Human** load(const std::string& filename, int& n)
 {
 	std::ifstream fin(filename);
-	//1)Вычисляем размер массива:
+	//1) Вычисляем размер массива:
 	if (fin.is_open())
 	{
 		std::string buffer;
@@ -275,12 +336,26 @@ Human** load(const std::string& filename, int& n)
 		}
 		n--;
 	}
-	//2) Выделяем память под массив
+	//2) Выделяем память под массив:
 	Human** group = new Human * [n] {};
 
+	//3) Возвращаемся в начало файла, для того чтобы прочитать строки, и загрузить их в объекты
 	fin.clear();
 	fin.seekg(0);
 	//cout << fin.tellg() << endl;
+
+	//4) Загружаем объекты из файла:
+	if (fin.is_open())
+	{
+		std::string type;
+		for (int i = 0; i < n; i++)
+		{
+			std::getline(fin, type, ':');
+			//cout << buffer << endl;
+			group[i] = HumanFactory(type);
+			fin >> *group[i];
+		}
+	}
 
 	return group;
 }
@@ -301,12 +376,10 @@ void main()
 
 	Teacher professor("White", "Walter", 50, "Chemistry", 20);
 	professor.print();
-	cout << delimiter << endl;
 
-	Graduate graduate("Montana", "Jessie", 40, "Physics", "WW_220", 80, 90, "Physical physics");
-	graduate.print();
-	cout << delimiter << endl;
-#endif INHERITANCE
+	Undergrad hank("Schreder", "Hank", 40, "Criminalistic", "WW_220", 95, 80, "How to catch Heisenberg");
+	hank.print();
+#endif // INHERITANCE
 	/*Human* group[] =
 	{
 		new Student("Pinkman", "Jessie", 25, "Chemistry", "WW_220", 90, 95),
