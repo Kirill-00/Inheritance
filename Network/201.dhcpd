@@ -58,8 +58,3 @@
 	hardware ethernet	00:19:99:b5:e9:4d;
 	fixed-address		192.168.100.32;
 }
-201-13
-{
-	hardware ethernet	;
-	fixed-address		;
-}

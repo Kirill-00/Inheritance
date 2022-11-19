@@ -70,6 +70,7 @@ void main()
 		for (int i = 1; !fin.eof(); i++)
 		{
 			fin >> sz_ip_buffer >> sz_mac_buffer;
+			if (sz_ip_buffer[0] == 0 || sz_mac_buffer[0] == 0)continue;
 			for (int i = 0; sz_mac_buffer[i]; i++)
 				if (sz_mac_buffer[i] == '-')sz_mac_buffer[i] = ':';
 			cout << number << "-" << i << endl;
